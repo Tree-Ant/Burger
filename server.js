@@ -1,17 +1,23 @@
-const express = require("express");
-
 var express = require("express");
-var exphbs = require("express-handlebars");
-var mysql = require("mysql");
+
+var PORT = process.env.PORT || 3000;
 
 var app = express();
 
-var PORT = process.env.PORT || 8080;
+app.use(express.static("public"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static("public"));
+var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
+var routes = require("./controllers/burgers_Controller.js");
+
+app.use(routes);
+
+app.listen(PORT, function() {
+  console.log("Server listening on: http://localhost:" + PORT);
+});
